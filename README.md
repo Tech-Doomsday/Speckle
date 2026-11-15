@@ -1,5 +1,51 @@
 # Speckle
 
+Speckle turns NISAR radar data into evidence of how the ground is changing. It reads NISAR GUNW and GCOV products from NASA Earthdata, fetching only the bytes it needs, and runs thirteen preprocessing steps, all visible in the interface. Users explore a 3D map with a timeline of ascending and descending passes.
+
+Each calamity has its own independent pipeline. Seventeen are designed and four are live: earthquake, tsunami, flood and deforestation. The earthquake pipeline compares measured ground movement with a physical fault model (Okada) and can flag possible quakes missing from catalogues. Tsunami evidence comes from ocean buoys and a wave simulation, so a linked earthquake–tsunami event rests on two independent data types. Flood and deforestation pipelines track radar backscatter changes to show spreading water and forest loss. Results are ranked by strength of evidence, and the app says plainly when data is insufficient.
+
+Planned work: tracing slight ground dents that reveal hidden collapse, river erosion effects on soil and vegetation, separating human-driven from natural forest decline, and radar changes before events.
+
+The code is public on GitHub under an open licence. Its clear SAR insights make it a strong tool for data scientists and for planners.
+
+---
+
+# JUST COPY AND PASTE THIS COMMAND
+# OR DOWNLOAD JUST `run.bat` AND RUN IT IN YOUR TERMINAL
+
+### Copy and paste into PowerShell (or Command Prompt), press Enter:
+
+```
+curl.exe -L -o run.bat https://raw.githubusercontent.com/Tech-Doomsday/Speckle/main/run.bat
+.\run.bat
+```
+
+### Or, if you downloaded [`run.bat`](https://raw.githubusercontent.com/Tech-Doomsday/Speckle/main/run.bat) (right-click → *Save link as*), open a terminal and run:
+
+```
+cd Downloads
+.\run.bat
+```
+
+(Or just double-click it. Run it from whichever folder you saved it in.)
+
+**Windows only. Needs [Git](https://git-scm.com/download/win), [Python 3.11+](https://www.python.org/downloads/) and [Node 20+](https://nodejs.org/) installed. Nothing else, no setup.**
+
+## What `run.bat` does for you
+
+1. Checks that Git, Python and Node are installed.
+2. Clones this repo into a `Speckle` folder next to the file (skipped if it is already inside the repo).
+3. Creates a Python environment and installs everything (first run only).
+4. Sets up the credentials file.
+5. Opens **two windows**: the engine (port 8900) and the website (port 3000).
+6. Opens **http://localhost:3000** in your browser when it is ready. The first run takes a minute or two.
+
+To stop Speckle, close the two windows (**Speckle Engine** and **Speckle UI**). To start it again, run `run.bat` again.
+
+---
+
+## Project layout
+
 Global SAR hazard detection engine — **NISAR** primary, **Sentinel-1** fallback. One Python engine
 (retrieval by HDF5 range reads → P01–P13 preprocessing → routed hazard pipelines → verdicts), one
 Next.js website (cinematic landing + console + globe map), and a debug hub for watching every step.
@@ -15,7 +61,7 @@ config/ supabase/ tests/ docs/
 
 ---
 
-## 1. Installation and running
+## 1. Manual installation (without `run.bat`)
 
 Two terminals: **terminal 1** is the engine API, **terminal 2** is the website. Python **≥ 3.11**
 and Node.js 20+ are needed. Requirements are unified — one `requirements.txt` covers the serving
